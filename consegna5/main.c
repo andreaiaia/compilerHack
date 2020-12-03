@@ -2,16 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "gestionefile.h"
+
 int main(int argc, char *argv[]) {
   // Apro il file input in read
   FILE *assem;
   assem = fopen(argv[1], "r");
   int len = strlen(argv[1]);
-  char outfile[len];
-  strcpy(outfile, argv[1]);
-  strcat(outfile, "hack");
+  char hack[len + 1];
+  rename_file(argv[1], hack);
+
   FILE *output;
-  output = fopen(outfile, "w");
+  output = fopen(hack, "w");
 
 
   fclose(assem);
