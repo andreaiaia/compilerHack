@@ -6,7 +6,8 @@
 
 void a_instruction(char [], FILE *);
 void to_bin(int, int []);
-void write(int [], FILE *);
+void write_a(int [], FILE *);
+void del_tab(char []);
 
 int main(int argc, char **argv) {
   // Apro il file input in read e creo il file destinazione
@@ -20,6 +21,7 @@ int main(int argc, char **argv) {
 
   char riga[128];
   while(fgets(riga, 127, assem)) {
+    del_tab(riga);
     if (riga[0] != '/') {
       if (riga[0] == '@') a_instruction(riga, output);
     }
@@ -35,7 +37,7 @@ void a_instruction(char riga[], FILE *output) {
   int num = atoi(riga + 1);
   int bin[15] = {0};
   to_bin(num, bin);
-  write(bin, output);
+  write_a(bin, output);
 }
 void to_bin(int i, int out[]) {
   for (int k = 14; k > 0; k--) {
@@ -43,10 +45,21 @@ void to_bin(int i, int out[]) {
     i /= 2;
   }
 }
-void write(int riga[], FILE *output) {
+void write_a(int riga[], FILE *output) {
   fprintf(output, "%d", 0);
   for(int i = 0; i < 15; i++) {
     fprintf(output, "%d", riga[i]);
   }
   fprintf(output, "\n");
+}
+void del_tab(char riga[]) {
+  int i = 0;
+  while (riga[i] == ' ' || riga[i] == '\t') i++;
+  int j = 0;
+  char pulita[128];
+  while (riga[i] != '\0') {
+    pulita[j] = riga[i];
+    j++, i++;
+  }
+  strcpy(riga, pulita);
 }
