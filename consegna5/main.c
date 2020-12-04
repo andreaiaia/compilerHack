@@ -3,11 +3,10 @@
 #include <string.h>
 
 #include "gestionefile.h"
+#include "operazioni.h"
 
 void a_instruction(char [], FILE *);
-void to_bin(int, int []);
-void write_a(int [], FILE *);
-void del_tab(char []);
+void c_instruction(char [], FILE *);
 
 int main(int argc, char **argv) {
   // Apro il file input in read e creo il file destinazione
@@ -24,6 +23,7 @@ int main(int argc, char **argv) {
     del_tab(riga);
     if (riga[0] != '/') {
       if (riga[0] == '@') a_instruction(riga, output);
+      else if (riga[0] != '(') c_instruction(riga, output);
     }
   }
 
@@ -39,27 +39,21 @@ void a_instruction(char riga[], FILE *output) {
   to_bin(num, bin);
   write_a(bin, output);
 }
-void to_bin(int i, int out[]) {
-  for (int k = 14; k > 0; k--) {
-    out[k] = i%2;
-    i /= 2;
+
+void c_instruction(char riga[], FILE *output) {
+  char codifica[14] = "0000000000000";
+
+  dest_bits(riga, codifica);
+
+  switch (expression)
+  {
+  case /* constant-expression */:
+    /* code */
+    break;
+  
+  default:
+    break;
   }
-}
-void write_a(int riga[], FILE *output) {
-  fprintf(output, "%d", 0);
-  for(int i = 0; i < 15; i++) {
-    fprintf(output, "%d", riga[i]);
-  }
-  fprintf(output, "\n");
-}
-void del_tab(char riga[]) {
-  int i = 0;
-  while (riga[i] == ' ' || riga[i] == '\t') i++;
-  int j = 0;
-  char pulita[128];
-  while (riga[i] != '\0') {
-    pulita[j] = riga[i];
-    j++, i++;
-  }
-  strcpy(riga, pulita);
+
+  write_c(codifica, output);
 }

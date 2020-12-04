@@ -13,3 +13,20 @@ void rename_file(char in_name[], char out_name[])
   }
   out_name[i] = '\0';
 }
+
+void write_a(int riga[], FILE *output)
+{
+  fprintf(output, "%d", 0);
+  for (int i = 0; i < 15; i++)
+  {
+    fprintf(output, "%d", riga[i]);
+  }
+  fprintf(output, "\n");
+}
+
+void write_c(char riga[], FILE *output) {
+  fprintf(output, "%s", "111");
+
+  
+  fprintf(output, "\n");
+}
