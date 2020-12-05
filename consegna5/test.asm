@@ -3,7 +3,7 @@
 @1
 // in tutti questi test a = 0
 M=0
-D=+1 
+D=1 
 MD=-1
 A=D
 AM=A
