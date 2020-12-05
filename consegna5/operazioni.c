@@ -55,3 +55,8 @@ void dest_bits(char riga[], char codifica[])
     break;
   }
 }
+
+void jump_bits(char riga[], char codifica[]) {
+  int i = 0;
+  i = 1;
+}

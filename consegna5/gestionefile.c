@@ -25,8 +25,9 @@ void write_a(int riga[], FILE *output)
 }
 
 void write_c(char riga[], FILE *output) {
-  fprintf(output, "%s", "111");
-
-  
+  for (int i = 0; i < 16; i++)
+  {
+    fprintf(output, "%c", riga[i]);
+  }
   fprintf(output, "\n");
 }
