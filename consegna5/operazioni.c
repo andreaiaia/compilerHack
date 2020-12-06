@@ -10,18 +10,21 @@ void to_bin(int i, int out[])
   }
 }
 
-void del_tab(char riga[])
+void clear(char riga[])     // Rimuove tutte le tabulazioni, i commenti e i tab dalla riga ca codificare
 {
   int i = 0;
-  while (riga[i] == ' ' || riga[i] == '\t') // Trovo il vero inizio della stringa
-    i++;
   int j = 0;
   char pulita[128];
-  while (riga[i] != '\0')     // Copio la stringa in una nuova a partire dall'inizio trovato
-  {
-    pulita[j] = riga[i];
-    j++, i++;
+  while((riga[i] != '\0') && (riga[i] != '/')) {  // Ciclo la riga finché non trovo un commento o la riga finisce
+    if (riga[i] != ' ' || riga[i] != '\t') {      // Se il carattere "puntato" non è uno spazio o un tab
+      pulita[j] = riga[i];                        // lo copio nella riga ripulita
+      j++;
+    }
+    i++;
   }
+  j++;
+  pulita[j] = '\0';            // Aggiungo il terminatore
+
   strcpy(riga, pulita);       // Copio il risultato nella riga che poi codificherò
 }
 

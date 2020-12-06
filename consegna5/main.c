@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 
   char riga[128];
   while(fgets(riga, 127, assem)) {    // Itero per ogni riga del file asm
-    del_tab(riga);
+    clear(riga);
     if (riga[0] != '/' && riga[0] != '\r' && riga[0] != '\n') {
       if (riga[0] == '@') a_instruction(riga, output);
       else if (riga[0] != '(') c_instruction(riga, output);
@@ -52,11 +52,15 @@ void c_instruction(char riga[], FILE *output) {
   jump_bits(riga, codifica);
   
   // Porto il mio index alla posizione dell'=
-  int i = 0;
-  while(riga[i] != '=') i++; 
+  int eq = 0;
+  while((riga[eq] != '=') && (riga[eq] != '\0')) i++;
+  // Porto un altro index alla positione del ;
+  int semicolon = 0;
+  while((riga[semicolon] != ';') && (riga[semicolon] != '\0')) j++;
+  
   // Questa funzione legge cosa c'è dopo l'uguale
   // E calcola i bit a, c1, c2, c3, c4, c5, c6 (si trova in operazioni.c)
-  comp_bits(riga, codifica, i);
+  comp_bits(riga, codifica, eq);
 
   // Scrivo la codifica nel file di output (si trova in gestionefile.c)
   write_c(codifica, output);
