@@ -16,15 +16,13 @@ void clear(char riga[])     // Rimuove tutte le tabulazioni, i commenti e i tab 
   int j = 0;
   char pulita[128];
   while((riga[i] != '\0') && (riga[i] != '/')) {  // Ciclo la riga finché non trovo un commento o la riga finisce
-    if (riga[i] != ' ' || riga[i] != '\t') {      // Se il carattere "puntato" non è uno spazio o un tab
+    if (riga[i] != ' ' && riga[i] != '\t') {      // Se il carattere "puntato" non è uno spazio o un tab
       pulita[j] = riga[i];                        // lo copio nella riga ripulita
       j++;
     }
     i++;
   }
-  j++;
   pulita[j] = '\0';            // Aggiungo il terminatore
-
   strcpy(riga, pulita);       // Copio il risultato nella riga che poi codificherò
 }
 
@@ -59,9 +57,39 @@ void dest_bits(char riga[], char codifica[])
   }
 }
 
-void jump_bits(char riga[], char codifica[]) {    // DA SCRIVERE
-  int i = 0;
-  i = 1;
+void jump_bits(char riga[], char codifica[], int i)
+{
+  switch (riga[i + 2])
+  {
+  case 'G':
+    codifica[15] = '1';
+    if (riga[i + 3] == 'E')
+      codifica[14] = '1';
+    break;
+
+  case 'E':
+    codifica[14] = '1';
+    break;
+
+  case 'L':
+    codifica[13] = '1';
+    if (riga[i + 3] == 'E')
+      codifica[14] = '1';
+    break;
+
+  case 'N':
+    codifica[13] = '1';
+    codifica[15] = '1';
+    break;
+
+  case 'M':
+    codifica[13] = '1';
+    codifica[14] = '1';
+    codifica[15] = '1';
+
+  default:
+    break;
+  }
 }
 
 // Codifico i bit a, c1, c2, c3, c4, c5, c6

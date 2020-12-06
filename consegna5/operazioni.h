@@ -5,5 +5,5 @@
 void to_bin(int, int[]);
 void clear(char[]);
 void dest_bits(char[], char[]);
-void jump_bits(char[], char[]);
+void jump_bits(char[], char[], int);
 void comp_bits(char[], char[], int);
