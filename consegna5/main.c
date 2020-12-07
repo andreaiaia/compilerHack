@@ -37,10 +37,10 @@ int main(int argc, char **argv)
 }
 
 void a_instruction(char riga[], FILE *output) {
-  int num = atoi(riga + 1);
+  int num = a_to_i(riga);     // from operazioni.c
   int bin[15] = {0};
-  to_bin(num, bin);         // from operazioni .c
-  write_a(bin, output);     // from gestionefile.c
+  to_bin(num, bin);           // from operazioni .c
+  write_a(bin, output);       // from gestionefile.c
 }
 
 void c_instruction(char riga[], FILE *output) {

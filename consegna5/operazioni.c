@@ -1,6 +1,14 @@
 #include "operazioni.h"
 
 // OPERAZIONI GENERICHE
+int a_to_i(char riga[]) {        // Funzione che legge una stringa e restituisce un intero
+  int num = 0;
+  for(int i = 1; riga[i] >= '0' && riga[i] <= '9'; i++)
+    num = num*10 + riga[i] - '0';
+
+  return num;
+}
+
 void to_bin(int i, int out[])
 {
   for (int k = 14; k >= 0; k--)    // Converte ogni decimale in binario con il modulo della divisione per 2
@@ -23,7 +31,7 @@ void clear(char riga[])     // Rimuove tutte le tabulazioni, i commenti e i tab 
     i++;
   }
   pulita[j] = '\0';            // Aggiungo il terminatore
-  strcpy(riga, pulita);       // Copio il risultato nella riga che poi codificherò
+  strcpy(riga, pulita);        // Copio il risultato nella riga che poi codificherò
 }
 
 // OPERAZIONI SULLE C INSTRUCTIONS
