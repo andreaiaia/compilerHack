@@ -45,9 +45,6 @@ void a_instruction(char riga[], FILE *output) {
 
 void c_instruction(char riga[], FILE *output) {
   char codifica[17] = "1110000000000000";
-
-  // Questa funzione imposta i bit d1, d2, d3 (from operazioni.c)
-  dest_bits(riga, codifica);
   
   // Porto il mio index alla posizione dell'=
   int eq = 0;
@@ -55,6 +52,10 @@ void c_instruction(char riga[], FILE *output) {
   // Porto un altro index alla positione del ;
   int semicolon = 0;
   while((riga[semicolon] != ';') && (riga[semicolon] != '\0')) semicolon++;
+
+  // Questa funzione imposta i bit d1, d2, d3 (from operazioni.c)
+  if (riga[eq] != '\0')
+    dest_bits(riga, codifica);
 
   // Se c'è un =, calcola il comp dopo l'uguale, 
   // altrimenti calcola il comp a partire da inizio riga
