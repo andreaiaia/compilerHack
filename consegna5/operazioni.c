@@ -3,7 +3,7 @@
 // OPERAZIONI GENERICHE
 void to_bin(int i, int out[])
 {
-  for (int k = 14; k > 0; k--)    // Converte ogni decimale in binario con il modulo della divisione per 2
+  for (int k = 14; k >= 0; k--)    // Converte ogni decimale in binario con il modulo della divisione per 2
   {
     out[k] = i % 2;
     i /= 2;
