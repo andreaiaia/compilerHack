@@ -6,6 +6,7 @@ M=0
 D=1 
 MD=-1
 A=D
+(ETICHETTA)
 D;JGT
 AM=A
 AD=!D
@@ -18,9 +19,11 @@ A=A+1
 AM=D-1
 AD=A-1
 AMD=D+A
+(PROVA)
 M=D-A
 D;JGE
 D=A-D
+(TERZA)
 MD=D&A
 A=D|A
 // Da qui in poi a = 11

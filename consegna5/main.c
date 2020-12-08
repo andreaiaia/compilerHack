@@ -1,5 +1,4 @@
 // Quando ho scritto questo codice solo io e Dio sapevamo cosa fa. Ora lo sa solo Dio.
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,7 +6,8 @@
 #include "gestionefile.h"
 #include "operazioni.h"
 
-void a_instruction(char[], FILE *);
+void prima_passata(char[], pTable, int);
+void a_instruction(char[], pTable, int*, FILE *);
 void c_instruction(char[], FILE *);
 
 int main(int argc, char **argv)
@@ -23,10 +23,28 @@ int main(int argc, char **argv)
   output = fopen(hack, "w");
 
   char riga[128];
+
+  // Prima passata, creazione della symbol table
+  pTable head = malloc(sizeof(table));
+  init_table(head);                     // from operazioni.c
+
+  while(fgets(riga, 127, assem)) {
+    clear(riga);
+    int indirizzo = 0;
+    if (riga[0] != '/' && riga[0] != '\r' && riga[0] != '\n' && riga[0] != '\0') {
+      prima_passata(riga, head, indirizzo);
+      indirizzo++;
+    }
+  }
+
+  rewind(assem);
+
+  // Seconda passata, traduzione delle istruzioni
+  int i = 16;
   while(fgets(riga, 127, assem)) {    // Itero per ogni riga del file asm
     clear(riga);
     if (riga[0] != '/' && riga[0] != '\r' && riga[0] != '\n' && riga[0] != '\0') {
-      if (riga[0] == '@') a_instruction(riga, output);
+      if (riga[0] == '@') a_instruction(riga, head, &i, output);
       else if (riga[0] != '(') c_instruction(riga, output);
     }
   }
@@ -36,8 +54,23 @@ int main(int argc, char **argv)
   return 0;
 }
 
-void a_instruction(char riga[], FILE *output) {
-  int num = a_to_i(riga);     // from operazioni.c
+void prima_passata(char riga[], pTable head, int indirizzo) {
+  pTable p = head;
+  while(p->next) p = p->next;
+  if (riga[0] == '(') {
+    p->next = malloc(sizeof(table));
+    p = p->next;
+    for(int i = 1; riga[i] != ')'; i++)
+      p->label[i-1] = riga[i];
+    p->address = indirizzo;
+    p->next = NULL;
+  }
+}
+
+void a_instruction(char riga[], pTable head, int *indirizzo, FILE *output) {
+  int num;
+  // Discerno se la @ è seguita da un numero, un'etichetta o una variabile
+  num = smistatore(riga, head, indirizzo);  // from operazioni.c
   int bin[15] = {0};
   to_bin(num, bin);           // from operazioni .c
   write_a(bin, output);       // from gestionefile.c

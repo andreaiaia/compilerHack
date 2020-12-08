@@ -1,7 +1,8 @@
 #include "operazioni.h"
 
 // OPERAZIONI GENERICHE
-int a_to_i(char riga[]) {        // Funzione che legge una stringa e restituisce un intero
+// Funzione che legge una stringa e restituisce un intero
+int a_to_i(char riga[]) {
   int num = 0;
   for(int i = 1; riga[i] >= '0' && riga[i] <= '9'; i++)
     num = num*10 + riga[i] - '0';
@@ -9,8 +10,7 @@ int a_to_i(char riga[]) {        // Funzione che legge una stringa e restituisce
   return num;
 }
 
-void to_bin(int i, int out[])
-{
+void to_bin(int i, int out[]) {
   for (int k = 14; k >= 0; k--)    // Converte ogni decimale in binario con il modulo della divisione per 2
   {
     out[k] = i % 2;
@@ -18,8 +18,8 @@ void to_bin(int i, int out[])
   }
 }
 
-void clear(char riga[])     // Rimuove tutte le tabulazioni, i commenti e i tab dalla riga ca codificare
-{
+// Rimuove tutte le tabulazioni, i commenti e i tab dalla riga ca codificare
+void clear(char riga[]) {
   int i = 0;
   int j = 0;
   char pulita[128];
@@ -32,6 +32,37 @@ void clear(char riga[])     // Rimuove tutte le tabulazioni, i commenti e i tab 
   }
   pulita[j] = '\0';            // Aggiungo il terminatore
   strcpy(riga, pulita);        // Copio il risultato nella riga che poi codificherò
+}
+
+// OPERAZINI SULLE A-INSTRUCTIONS
+
+// Discerno se la @ è seguita da un numero, un'etichetta o una variabile
+int smistatore(char riga[], pTable head, int *indirizzo) {
+  int num;
+  pTable p = head;
+  if ((riga[1] >= 'A' && riga[1] <= 'Z') || (riga[1] >= 'a' && riga[1] <= 'z'))
+  {
+    char nome_label[128];
+    for (int i = 1; riga[i] != '\0'; i++)
+      nome_label[i - 1] = riga[i];
+    while (strcmp(p->label, nome_label) && (p->next))
+      p = p->next;
+    if (!strcmp(p->label, nome_label) == 0)
+    {
+      p->next = malloc(sizeof(table));
+      p = p->next;
+      p->address = *indirizzo;
+      strcpy(p->label, nome_label);
+      p->next = NULL;
+    }
+    num = p->address;
+  }
+  else
+  {
+    num = a_to_i(riga); // from operazioni.c
+  }
+
+  return num;
 }
 
 // OPERAZIONI SULLE C INSTRUCTIONS
@@ -65,6 +96,7 @@ void dest_bits(char riga[], char codifica[])
   }
 }
 
+// Codifico i bit j1, j2, j3
 void jump_bits(char riga[], char codifica[], int i)
 {
   switch (riga[i + 2])
@@ -226,4 +258,149 @@ void comp_bits(char riga[], char codifica[], int i)
     }
     break;
   }
+}
+
+// OPERAZIONI SULLA SYMBOL TABLE
+void init_table(pTable head)
+{
+  pTable slide = head;
+  // RAM0
+  strcpy(slide->label, "R0");
+  slide->address = 0;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM1
+  strcpy(slide->label, "R1");
+  slide->address = 1;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM2
+  strcpy(slide->label, "R2");
+  slide->address = 2;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM3
+  strcpy(slide->label, "R3");
+  slide->address = 3;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM4
+  strcpy(slide->label, "R4");
+  slide->address = 4;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM5
+  strcpy(slide->label, "R5");
+  slide->address = 5;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM6
+  strcpy(slide->label, "R6");
+  slide->address = 6;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM7
+  strcpy(slide->label, "R7");
+  slide->address = 7;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM8
+  strcpy(slide->label, "R8");
+  slide->address = 8;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM9
+  strcpy(slide->label, "R9");
+  slide->address = 9;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM10
+  strcpy(slide->label, "R10");
+  slide->address = 10;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM11
+  strcpy(slide->label, "R11");
+  slide->address = 11;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM12
+  strcpy(slide->label, "R12");
+  slide->address = 12;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM13
+  strcpy(slide->label, "R13");
+  slide->address = 13;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM14
+  strcpy(slide->label, "R14");
+  slide->address = 14;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // RAM15
+  strcpy(slide->label, "R15");
+  slide->address = 15;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // SCREEN
+  strcpy(slide->label, "SCREEN");
+  slide->address = 16384;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // KBD
+  strcpy(slide->label, "KBD");
+  slide->address = 24576;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // SP
+  strcpy(slide->label, "SP");
+  slide->address = 0;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // LCL
+  strcpy(slide->label, "LCL");
+  slide->address = 1;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // ARG
+  strcpy(slide->label, "ARG");
+  slide->address = 2;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // THIS
+  strcpy(slide->label, "THIS");
+  slide->address = 3;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // THAT
+  strcpy(slide->label, "THAT");
+  slide->address = 4;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // LOOP
+  strcpy(slide->label, "LOOP");
+  slide->address = 4;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // STOP
+  strcpy(slide->label, "STOP");
+  slide->address = 18;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // END
+  strcpy(slide->label, "END");
+  slide->address = 22;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // i
+  strcpy(slide->label, "i");
+  slide->address = 16;
+  slide->next = malloc(sizeof(table));
+  slide = slide->next;
+  // sum
+  strcpy(slide->label, "sum");
+  slide->address = 17;
+  slide->next = NULL;
 }
