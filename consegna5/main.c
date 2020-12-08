@@ -10,6 +10,8 @@ void prima_passata(char[], pTable, int);
 void a_instruction(char[], pTable, int*, FILE *);
 void c_instruction(char[], FILE *);
 
+// Struct della symbol table definita in operazioni.h
+
 int main(int argc, char **argv)
 {
   // Apro il file input in read
@@ -67,10 +69,10 @@ void prima_passata(char riga[], pTable head, int indirizzo) {
   }
 }
 
-void a_instruction(char riga[], pTable head, int *indirizzo, FILE *output) {
-  int num;
+void a_instruction(char riga[], pTable head, int *i, FILE *output) {
+  int num = 0;
   // Discerno se la @ è seguita da un numero, un'etichetta o una variabile
-  num = smistatore(riga, head, indirizzo);  // from operazioni.c
+  num = smistatore(riga, head, i);  // from operazioni.c
   int bin[15] = {0};
   to_bin(num, bin);           // from operazioni .c
   write_a(bin, output);       // from gestionefile.c

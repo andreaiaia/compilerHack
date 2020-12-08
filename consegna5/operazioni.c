@@ -24,7 +24,7 @@ void clear(char riga[]) {
   int j = 0;
   char pulita[128];
   while((riga[i] != '\0') && (riga[i] != '/')) {  // Ciclo la riga finché non trovo un commento o la riga finisce
-    if (riga[i] != ' ' && riga[i] != '\t') {      // Se il carattere "puntato" non è uno spazio o un tab
+    if (riga[i] != ' ' && riga[i] != '\t' && riga[i] != '\r' && riga[i] != '\n') {      // Se il carattere "puntato" non è uno spazio o un tab
       pulita[j] = riga[i];                        // lo copio nella riga ripulita
       j++;
     }
@@ -37,24 +37,26 @@ void clear(char riga[]) {
 // OPERAZINI SULLE A-INSTRUCTIONS
 
 // Discerno se la @ è seguita da un numero, un'etichetta o una variabile
-int smistatore(char riga[], pTable head, int *indirizzo) {
+int smistatore(char riga[], pTable head, int *i) {
   int num;
   pTable p = head;
   if ((riga[1] >= 'A' && riga[1] <= 'Z') || (riga[1] >= 'a' && riga[1] <= 'z'))
   {
     char nome_label[128];
-    for (int i = 1; riga[i] != '\0'; i++)
-      nome_label[i - 1] = riga[i];
-    while (strcmp(p->label, nome_label) && (p->next))
+    int j;
+    for (j = 1; riga[j] != '\0'; j++) nome_label[j - 1] = riga[j];
+    nome_label[j-1] = '\0';
+    while ((strcmp(p->label, nome_label) != 0) && (p->next)) {
       p = p->next;
-    if (!strcmp(p->label, nome_label) == 0)
+    }
+    if (strcmp(p->label, nome_label) != 0)  // se le due stringhe sono diverse
     {
       p->next = malloc(sizeof(table));
       p = p->next;
-      p->address = *indirizzo;
+      p->address = *i;
       strcpy(p->label, nome_label);
       p->next = NULL;
-      *indirizzo += 1;
+      *i += 1;
     }
     num = p->address;
   }
@@ -378,30 +380,5 @@ void init_table(pTable head)
   // THAT
   strcpy(slide->label, "THAT");
   slide->address = 4;
-  slide->next = malloc(sizeof(table));
-  slide = slide->next;
-  // LOOP
-  strcpy(slide->label, "LOOP");
-  slide->address = 4;
-  slide->next = malloc(sizeof(table));
-  slide = slide->next;
-  // STOP
-  strcpy(slide->label, "STOP");
-  slide->address = 18;
-  slide->next = malloc(sizeof(table));
-  slide = slide->next;
-  // END
-  strcpy(slide->label, "END");
-  slide->address = 22;
-  slide->next = malloc(sizeof(table));
-  slide = slide->next;
-  // i
-  strcpy(slide->label, "i");
-  slide->address = 16;
-  slide->next = malloc(sizeof(table));
-  slide = slide->next;
-  // sum
-  strcpy(slide->label, "sum");
-  slide->address = 17;
   slide->next = NULL;
 }
