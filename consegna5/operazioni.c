@@ -49,7 +49,7 @@ int smistatore(char riga[], pTable head, int *i) {
     while ((strcmp(p->label, nome_label) != 0) && (p->next)) {
       p = p->next;
     }
-    if (strcmp(p->label, nome_label) != 0)  // se le due stringhe sono diverse
+    if (strcmp(p->label, nome_label))  // se le due stringhe sono diverse
     {
       p->next = malloc(sizeof(table));
       p = p->next;

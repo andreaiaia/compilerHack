@@ -30,12 +30,12 @@ int main(int argc, char **argv)
   pTable head = malloc(sizeof(table));
   init_table(head);                     // from operazioni.c
 
+  int indirizzo = 0;
   while(fgets(riga, 127, assem)) {
     clear(riga);
-    int indirizzo = 0;
     if (riga[0] != '/' && riga[0] != '\r' && riga[0] != '\n' && riga[0] != '\0') {
       prima_passata(riga, head, indirizzo);
-      indirizzo++;
+      if (riga[0] != '(') indirizzo++;
     }
   }
 
@@ -87,7 +87,7 @@ void c_instruction(char riga[], FILE *output) {
   // Porto un altro index alla positione del ;
   int semicolon = 0;
   while((riga[semicolon] != ';') && (riga[semicolon] != '\0')) semicolon++;
-
+  //printf("%d\n", semicolon);
   // Questa funzione imposta i bit d1, d2, d3 (from operazioni.c)
   if (riga[eq] != '\0')
     dest_bits(riga, codifica);
@@ -100,7 +100,7 @@ void c_instruction(char riga[], FILE *output) {
   else comp_bits(riga, codifica, -1);     // from operazioni.c
 
   // Questa funzione imposta i bit j1, j2, j3 (from operacioni.c)
-  jump_bits(riga, codifica, semicolon);
+  if(riga[semicolon] != '\0') jump_bits(riga, codifica, semicolon);
 
   // Scrivo la codifica nel file di output (from gestionefile.c)
   write_c(codifica, output);
