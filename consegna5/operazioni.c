@@ -54,6 +54,7 @@ int smistatore(char riga[], pTable head, int *indirizzo) {
       p->address = *indirizzo;
       strcpy(p->label, nome_label);
       p->next = NULL;
+      *indirizzo += 1;
     }
     num = p->address;
   }
