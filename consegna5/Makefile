@@ -1,5 +1,5 @@
 main: main.o gestionefile.o operazioni.o
-	gcc -o main main.o gestionefile.o operazioni.o
+	gcc -o Assembler main.o gestionefile.o operazioni.o
 
 main.o: main.c gestionefile.h
 	gcc -c main.c
